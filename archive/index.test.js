@@ -1,4 +1,4 @@
-const example = require('../index');
+const example = require('./index');
 
 test('1은 1이다.', () => {
     expect(1).toBe(1);
