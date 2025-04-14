@@ -4,6 +4,14 @@ const example = {
         name,
         age,
     }),
+    getName: (callback) => {
+        const name = 'Char1ey';
+
+        setTimeout(() => {
+            callback(name);
+            throw new Error('서버 에러');
+        }, 3000);
+    },
 };
 
 module.exports = example;
