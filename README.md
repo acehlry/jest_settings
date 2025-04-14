@@ -57,3 +57,78 @@ test('2 더하기 3은 5다.', () => {
 6. toBeDefined: 예측값이 정의되었는지 판별
 7. toBeTruthy: 예측값이 `Truthy`인지 판별
 8. toBeFalsy: 예측값이 `Falsy`인지 판별
+
+### 비동기 테스트
+
+```js
+// 테스트 대상 코드
+const example = {
+    getName: (callback) => {
+        const name = 'Char1ey';
+
+        setTimeout(() => {
+            callback(name);
+            // throw new Error('서버 에러');
+        }, 3000);
+    },
+
+    getAge: () => {
+        const age = 31;
+        return new Promise((res, rej) => {
+            setTimeout(() => {
+                res(age);
+            }, 3000);
+        });
+    },
+};
+```
+
+테스트 케이스 작성
+
+-   done을 이용해서 함수가 끝날 때를 기다려야함. 그렇지 않으면, 테스트에서 그냥 통과 될 수 있음
+
+```js
+test('3초 후에 받아온 이름은 Char1ey', () => {
+    function callback(name) {
+        expect(name).toBe('Char1ey');
+    }
+
+    example.getName(callback);
+});
+
+// done을 사용하여 해당 함수가 끝나기를 기다린다.
+// 비동기 함수를 테스트 할 때 사용한다.
+// 만약 done을 사용하지 않으면, 테스트를 실패한다.
+test('3초 후에 받아온 이름은 Char1ey', (done) => {
+    function callback(name) {
+        try {
+            expect(name).toBe('Mike');
+            done();
+        } catch (error) {
+            done();
+        }
+    }
+
+    example.getName(callback);
+});
+
+test('3초 후에 받아온 나이는 31', () => {
+    return example.getAge().then((age) => {
+        expect(age).toBe(31);
+    });
+});
+
+test('3초 후에 받아온 나이는 31', () => {
+    return expect(example.getAge()).resolves.toBe(31);
+    // return expect(example.getAge()).rejects.toBe(31);
+});
+
+test('3초 후에 받아온 나이는 31', async () => {
+    const age = await example.getAge();
+    expect(age).toBe(31);
+});
+
+test('3초 후에 받아온 나이는 31', async () => {
+    await expect(example.getAge()).resolves.toBe(31);
+});
+```
