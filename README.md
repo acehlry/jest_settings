@@ -132,3 +132,44 @@ test('3초 후에 받아온 나이는 31', async () => {
     await expect(example.getAge()).resolves.toBe(31);
 });
 ```
+
+### 테스트 훅
+
+-   `beforeEach` : `각 테스트` 전에 실행
+-   `afterEach` : `각 테스트` 후에 실행
+-   `beforeAll` : `전체 테스트` 전에 실행
+    -   ex) DB를 연결해서 테스트 하는 경우 커넥션
+    -   ex) 생성자 주입(백엔드 테스트 시)
+-   `afterAll` : `전체 테스트` 후에 실행
+    -   ex) DB 연결 해제
+
+```js
+const mock = require('./mock');
+
+let num = 0;
+
+beforeEach(() => {
+    num = 0;
+});
+
+afterEach(() => {
+    num = 0;
+});
+
+test('0 더하기 1은 1', () => {
+    num = mock.add(num, 1);
+    expect(num).toBe(1);
+});
+
+test('0 더하기 2는 2', () => {
+    num = mock.add(num, 2);
+    expect(num).toBe(2);
+});
+
+test('0 더하기 3는 3', () => {
+    num = mock.add(num, 3);
+    expect(num).toBe(3);
+});
+```
+
+### Mock 함수
