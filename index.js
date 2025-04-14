@@ -9,8 +9,17 @@ const example = {
 
         setTimeout(() => {
             callback(name);
-            throw new Error('서버 에러');
+            // throw new Error('서버 에러');
         }, 3000);
+    },
+
+    getAge: () => {
+        const age = 31;
+        return new Promise((res, rej) => {
+            setTimeout(() => {
+                res(age);
+            }, 3000);
+        });
     },
 };
 

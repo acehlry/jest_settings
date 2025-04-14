@@ -23,3 +23,23 @@ test('3초 후에 받아온 이름은 Char1ey', (done) => {
 
     example.getName(callback);
 });
+
+test('3초 후에 받아온 나이는 31', () => {
+    return example.getAge().then((age) => {
+        expect(age).toBe(31);
+    });
+});
+
+test('3초 후에 받아온 나이는 31', () => {
+    return expect(example.getAge()).resolves.toBe(31);
+    // return expect(example.getAge()).rejects.toBe(31);
+});
+
+test('3초 후에 받아온 나이는 31', async () => {
+    const age = await example.getAge();
+    expect(age).toBe(31);
+});
+
+test('3초 후에 받아온 나이는 31', async () => {
+    await expect(example.getAge()).resolves.toBe(31);
+});
